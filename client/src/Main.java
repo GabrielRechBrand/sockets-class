@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Socket connection = new Socket("10.150.40.37", 4444);
+        Socket connection = new Socket(JOptionPane.showInputDialog("Insert the IP"), Integer.parseInt(JOptionPane.showInputDialog("Insert the port.")));
 
         PrintWriter out = new PrintWriter(connection.getOutputStream(), true);
         String message = "";

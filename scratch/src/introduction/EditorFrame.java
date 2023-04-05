@@ -61,6 +61,7 @@ public class EditorFrame {
             frame.add(scrollPane, BorderLayout.SOUTH);
 
             frame.setSize(1280, 720);
+            frame.setResizable(false);
             frame.setVisible(true);
         }
 

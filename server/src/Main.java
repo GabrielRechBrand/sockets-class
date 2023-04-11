@@ -10,11 +10,16 @@ public class Main {
         ServerSocket server = new ServerSocket(Integer.parseInt(JOptionPane.showInputDialog("Insert the port")));
 
         Socket socket = server.accept();
+
+        System.out.println("Connected");
+
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         String message = "";
 
         while((message = in.readLine()) != null) {
             System.out.println(message);
         }
+
+        System.out.println("Disconnected");
     }
 }

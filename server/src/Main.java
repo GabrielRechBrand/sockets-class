@@ -2,24 +2,39 @@ import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        ServerSocket server = new ServerSocket(Integer.parseInt(JOptionPane.showInputDialog("Insert the port")));
+    public static void main(String[] args) {
+        try {
+            ServerSocket server = new ServerSocket(Integer.parseInt(JOptionPane.showInputDialog("Insert the port")));
+            List<Socket> clients = new ArrayList<>();
+            
+            while (true) {
+                Socket socket = server.accept();
+                Server client = new Server(socket);
+                System.out.println("Client connected");
+                client.start();
 
-        Socket socket = server.accept();
+                clients.add(socket);
 
-        System.out.println("Connected");
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String message = "";
-
-        while((message = in.readLine()) != null) {
-            System.out.println(message);
+                clients.forEach(c -> {
+                    PrintWriter cOut;
+                    try {
+                        cOut = new PrintWriter(c.getOutputStream(), true);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    cOut.println(client.getName().concat(" connected!"));
+                });
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
 
-        System.out.println("Disconnected");
     }
 }
